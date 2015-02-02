@@ -512,6 +512,252 @@ class ClassMetadataBuilderTest extends \Doctrine\Tests\OrmTestCase
             ),
                 ), $this->cm->associationMappings);
     }
+    
+    
+    public function testCreateManyToOneWithOrphanRemoval()
+    {
+        $this->assertIsFluent(
+            $this->builder->createManyToOne('groups', 'Doctrine\Tests\Models\CMS\CmsGroup')
+                              ->addJoinColumn('group_id', 'id', true, false, 'CASCADE')
+                              ->cascadeAll()
+                              ->fetchExtraLazy()
+                              ->orphanRemoval()
+                              ->build()
+        );
+
+        $this->assertEquals(array('groups' => array (
+                'fieldName' => 'groups',
+                'targetEntity' => 'Doctrine\\Tests\\Models\\CMS\\CmsGroup',
+                'cascade' => array (
+                  0 => 'remove',
+                  1 => 'persist',
+                  2 => 'refresh',
+                  3 => 'merge',
+                  4 => 'detach',
+                ),
+                'fetch' => 4,
+                'joinColumns' => array (
+                  0 =>
+                  array (
+                    'name' => 'group_id',
+                    'referencedColumnName' => 'id',
+                    'nullable' => true,
+                    'unique' => false,
+                    'onDelete' => 'CASCADE',
+                    'columnDefinition' => NULL,
+                  ),
+                ),
+                'type' => 2,
+                'mappedBy' => NULL,
+                'inversedBy' => NULL,
+                'isOwningSide' => true,
+                'sourceEntity' => 'Doctrine\\Tests\\Models\\CMS\\CmsUser',
+                'isCascadeRemove' => true,
+                'isCascadePersist' => true,
+                'isCascadeRefresh' => true,
+                'isCascadeMerge' => true,
+                'isCascadeDetach' => true,
+                'sourceToTargetKeyColumns' =>
+                array (
+                  'group_id' => 'id',
+                ),
+                'joinColumnFieldNames' =>
+                array (
+                  'group_id' => 'group_id',
+                ),
+                'targetToSourceKeyColumns' =>
+                array (
+                  'id' => 'group_id',
+                ),
+                'orphanRemoval' => true,
+              ),
+            ), $this->cm->associationMappings);
+    }
+
+    public function testCreateOneToOneWithOrphanRemoval()
+    {
+        $this->assertIsFluent(
+            $this->builder->createOneToOne('groups', 'Doctrine\Tests\Models\CMS\CmsGroup')
+                              ->addJoinColumn('group_id', 'id', true, false, 'CASCADE')
+                              ->cascadeAll()
+                              ->fetchExtraLazy()
+                              ->orphanRemoval()
+                              ->build()
+        );
+
+        $this->assertEquals(array('groups' => array (
+                'fieldName' => 'groups',
+                'targetEntity' => 'Doctrine\\Tests\\Models\\CMS\\CmsGroup',
+                'cascade' => array (
+                  0 => 'remove',
+                  1 => 'persist',
+                  2 => 'refresh',
+                  3 => 'merge',
+                  4 => 'detach',
+                ),
+                'fetch' => 4,
+                'joinColumns' => array (
+                  0 =>
+                  array (
+                    'name' => 'group_id',
+                    'referencedColumnName' => 'id',
+                    'nullable' => true,
+                    'unique' => true,
+                    'onDelete' => 'CASCADE',
+                    'columnDefinition' => NULL,
+                  ),
+                ),
+                'type' => 1,
+                'mappedBy' => NULL,
+                'inversedBy' => NULL,
+                'isOwningSide' => true,
+                'sourceEntity' => 'Doctrine\\Tests\\Models\\CMS\\CmsUser',
+                'isCascadeRemove' => true,
+                'isCascadePersist' => true,
+                'isCascadeRefresh' => true,
+                'isCascadeMerge' => true,
+                'isCascadeDetach' => true,
+                'sourceToTargetKeyColumns' =>
+                array (
+                  'group_id' => 'id',
+                ),
+                'joinColumnFieldNames' =>
+                array (
+                  'group_id' => 'group_id',
+                ),
+                'targetToSourceKeyColumns' =>
+                array (
+                  'id' => 'group_id',
+                ),
+                'orphanRemoval' => true,
+              ),
+            ), $this->cm->associationMappings);
+    }
+
+    public function testCreateManyToManyWithOrphanRemoval()
+    {
+        $this->assertIsFluent(
+            $this->builder->createManyToMany('groups', 'Doctrine\Tests\Models\CMS\CmsGroup')
+                              ->setJoinTable('groups_users')
+                              ->addJoinColumn('group_id', 'id', true, false, 'CASCADE')
+                              ->addInverseJoinColumn('user_id', 'id')
+                              ->cascadeAll()
+                              ->fetchExtraLazy()
+                              ->orphanRemoval()
+                              ->build()
+        );
+
+        $this->assertEquals(array(
+            'groups' =>
+            array(
+                'fieldName' => 'groups',
+                'targetEntity' => 'Doctrine\\Tests\\Models\\CMS\\CmsGroup',
+                'cascade' =>
+                array(
+                    0 => 'remove',
+                    1 => 'persist',
+                    2 => 'refresh',
+                    3 => 'merge',
+                    4 => 'detach',
+                ),
+                'fetch' => 4,
+                'joinTable' =>
+                array(
+                    'joinColumns' =>
+                    array(
+                        0 =>
+                        array(
+                            'name' => 'group_id',
+                            'referencedColumnName' => 'id',
+                            'nullable' => true,
+                            'unique' => false,
+                            'onDelete' => 'CASCADE',
+                            'columnDefinition' => NULL,
+                        ),
+                    ),
+                    'inverseJoinColumns' =>
+                    array(
+                        0 =>
+                        array(
+                            'name' => 'user_id',
+                            'referencedColumnName' => 'id',
+                            'nullable' => true,
+                            'unique' => false,
+                            'onDelete' => NULL,
+                            'columnDefinition' => NULL,
+                        ),
+                    ),
+                    'name' => 'groups_users',
+                ),
+                'type' => 8,
+                'mappedBy' => NULL,
+                'inversedBy' => NULL,
+                'isOwningSide' => true,
+                'sourceEntity' => 'Doctrine\\Tests\\Models\\CMS\\CmsUser',
+                'isCascadeRemove' => true,
+                'isCascadePersist' => true,
+                'isCascadeRefresh' => true,
+                'isCascadeMerge' => true,
+                'isCascadeDetach' => true,
+                'isOnDeleteCascade' => true,
+                'relationToSourceKeyColumns' =>
+                array(
+                    'group_id' => 'id',
+                ),
+                'joinTableColumns' =>
+                array(
+                    0 => 'group_id',
+                    1 => 'user_id',
+                ),
+                'relationToTargetKeyColumns' =>
+                array(
+                    'user_id' => 'id',
+                ),
+                'orphanRemoval' => true,
+            ),
+                ), $this->cm->associationMappings);
+    }
+
+    public function testCreateOneToManyWithOrphanRemoval()
+    {
+        $this->assertIsFluent(
+                $this->builder->createOneToMany('groups', 'Doctrine\Tests\Models\CMS\CmsGroup')
+                        ->mappedBy('test')
+                        ->setOrderBy(array('test'))
+                        ->setIndexBy('test')
+                        ->orphanRemoval()
+                        ->build()
+        );
+
+        $this->assertEquals(array(
+            'groups' =>
+            array(
+                'fieldName' => 'groups',
+                'targetEntity' => 'Doctrine\\Tests\\Models\\CMS\\CmsGroup',
+                'mappedBy' => 'test',
+                'orderBy' =>
+                array(
+                    0 => 'test',
+                ),
+                'indexBy' => 'test',
+                'type' => 4,
+                'inversedBy' => NULL,
+                'isOwningSide' => false,
+                'sourceEntity' => 'Doctrine\\Tests\\Models\\CMS\\CmsUser',
+                'fetch' => 2,
+                'cascade' =>
+                array(
+                ),
+                'isCascadeRemove' => false,
+                'isCascadePersist' => false,
+                'isCascadeRefresh' => false,
+                'isCascadeMerge' => false,
+                'isCascadeDetach' => false,
+                'orphanRemoval' => true,
+            ),
+                ), $this->cm->associationMappings);
+    }
+    
 
     public function assertIsFluent($ret)
     {
