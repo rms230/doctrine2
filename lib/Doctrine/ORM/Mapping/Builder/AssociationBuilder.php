@@ -130,6 +130,17 @@ class AssociationBuilder
         $this->mapping['cascade'][] = "refresh";
         return $this;
     }
+    
+    /**
+     *
+     * @param type $orphanRemoval
+     * @return OneToManyAssociationBuilder
+     */
+    public function orphanRemoval($orphanRemoval = true)
+    {
+         $this->mapping['orphanRemoval'] = $orphanRemoval;
+         return $this;
+    }
 
     /**
      * @return AssociationBuilder
