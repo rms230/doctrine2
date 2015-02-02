@@ -50,6 +50,18 @@ class OneToManyAssociationBuilder extends AssociationBuilder
         $this->mapping['indexBy'] = $fieldName;
         return $this;
     }
+    
+    
+    /**
+     *
+     * @param type $orphanRemoval
+     * @return OneToManyAssociationBuilder
+     */
+    public function orphanRemoval($orphanRemoval = true)
+    {
+         $this->mapping['orphanRemoval'] = $orphanRemoval;
+         return $this;
+    }
 
     /**
      * @return ClassMetadataBuilder
